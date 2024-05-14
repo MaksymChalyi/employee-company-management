@@ -13,6 +13,7 @@ import {
 import Typography from "components/Typography";
 import Button from "components/Button";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchEmployees } from "app/reducers/emloyee";
 // import { deleteEmployee, updateEmployee, addEmployee } from "./employee";
 
 function Default() {
@@ -40,17 +41,18 @@ function Default() {
     // Your logic for applying filter
   };
 
-  const entities = useSelector((state) => state.employee.employees);
-
+  const entities = useSelector(({ employee }) => employee.employees);
+  console.log("employees", entities);
   // useEffect for fetching data when the component mounts
   useEffect(() => {
     // Your logic for fetching initial data
+    dispatch(fetchEmployees());
   }, []);
 
   return (
     <>
       <Typography variant="h5" gutterBottom align="center">
-        Employee Table
+        <h2>Employees Table</h2>
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
@@ -94,32 +96,33 @@ function Default() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {entities.map((entity) => (
-              <TableRow
-                key={entity.id}
-                onClick={() => handleEntityClick(entity.id)}
-                style={{ cursor: "pointer" }}
-              >
-                <TableCell>{entity.id}</TableCell>
-                <TableCell>{entity.name}</TableCell>
-                <TableCell>{entity.position}</TableCell>
-                <TableCell>{entity.company}</TableCell>
-                <TableCell sx={{ display: "flex", gap: "8px" }}>
-                  <Button
-                    onClick={() => handleUpdate(entity.id)}
-                    colorVariant="secondary"
-                  >
-                    Update
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(entity.id)}
-                    colorVariant="header"
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {entities.length > 0 &&
+              entities.map((entity) => (
+                <TableRow
+                  key={entity.id}
+                  onClick={() => handleEntityClick(entity.id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <TableCell>{entity.id}</TableCell>
+                  <TableCell>{entity.name}</TableCell>
+                  <TableCell>{entity.position}</TableCell>
+                  <TableCell>{entity.company.name}</TableCell>
+                  <TableCell sx={{ display: "flex", gap: "8px" }}>
+                    <Button
+                      onClick={() => handleUpdate(entity.id)}
+                      colorVariant="secondary"
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(entity.id)}
+                      colorVariant="header"
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

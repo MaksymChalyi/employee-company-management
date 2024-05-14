@@ -1,5 +1,10 @@
 // Імпорт констант для actions
-import { ADD_EMPLOYEE, DELETE_EMPLOYEE, UPDATE_EMPLOYEE } from "./actionTypes";
+import {
+  ADD_EMPLOYEE,
+  DELETE_EMPLOYEE,
+  UPDATE_EMPLOYEE,
+  GET_EMPLOYEES,
+} from "./actionTypes";
 
 // Action creators
 export const addEmployee = (employee) => ({
@@ -15,4 +20,9 @@ export const deleteEmployee = (id) => ({
 export const updateEmployee = (employee) => ({
   type: UPDATE_EMPLOYEE,
   payload: employee,
+});
+
+export const getEmployees = (employees) => ({
+  type: GET_EMPLOYEES,
+  payload: employees,
 });
