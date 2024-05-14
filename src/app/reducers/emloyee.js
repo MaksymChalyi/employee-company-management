@@ -36,44 +36,44 @@ const initialState = {
   error: "",
 };
 
-const FETCH_USERS_REQUESTED = "FETCH_USERS_REQUESTED";
-const FETCH_USERS_SUCCEEDED = "FETCH_USERS_SUCCEEDED";
-const FETCH_USERS_FAILED = "FETCH_USERS_FAILED";
+const FETCH_EMPLOYEES_REQUESTED = "FETCH_EMPLOYEES_REQUESTED";
+const FETCH_EMPLOYEES_SUCCEEDED = "FETCH_EMPLOYEES_SUCCEEDED";
+const FETCH_EMPLOYEES_FAILED = "FETCH_EMPLOYEES_FAILED";
 
 const fetchUserRequest = () => {
   return {
-    type: FETCH_USERS_REQUESTED,
+    type: FETCH_EMPLOYEES_REQUESTED,
   };
 };
 
 const fetchUserSuccess = (employees) => {
   return {
-    type: FETCH_USERS_SUCCEEDED,
+    type: FETCH_EMPLOYEES_SUCCEEDED,
     payload: employees,
   };
 };
 
 const fetchUsersFailure = (error) => {
   return {
-    type: FETCH_USERS_FAILED,
+    type: FETCH_EMPLOYEES_FAILED,
     payload: error,
   };
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_USERS_REQUESTED:
+    case FETCH_EMPLOYEES_REQUESTED:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_USERS_SUCCEEDED:
+    case FETCH_EMPLOYEES_SUCCEEDED:
       return {
         loading: false,
         employees: action.payload,
         error: "",
       };
-    case FETCH_USERS_FAILED:
+    case FETCH_EMPLOYEES_FAILED:
       return {
         loading: false,
         employees: [],

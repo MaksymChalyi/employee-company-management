@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -9,15 +9,17 @@ import {
   Paper,
   TextField,
   Grid,
+  Pagination,
 } from "@mui/material";
 import Typography from "components/Typography";
 import Button from "components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmployees } from "app/reducers/emloyee";
-// import { deleteEmployee, updateEmployee, addEmployee } from "./employee";
 
 function Default() {
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const handleDelete = (id) => {
     // dispatch(deleteEmployee(id));
@@ -43,7 +45,15 @@ function Default() {
 
   const entities = useSelector(({ employee }) => employee.employees);
   console.log("employees", entities);
-  // useEffect for fetching data when the component mounts
+
+  // Logic for pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = entities.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   useEffect(() => {
     // Your logic for fetching initial data
     dispatch(fetchEmployees());
@@ -96,36 +106,40 @@ function Default() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {entities.length > 0 &&
-              entities.map((entity) => (
-                <TableRow
-                  key={entity.id}
-                  onClick={() => handleEntityClick(entity.id)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <TableCell>{entity.id}</TableCell>
-                  <TableCell>{entity.name}</TableCell>
-                  <TableCell>{entity.position}</TableCell>
-                  <TableCell>{entity.company.name}</TableCell>
-                  <TableCell sx={{ display: "flex", gap: "8px" }}>
-                    <Button
-                      onClick={() => handleUpdate(entity.id)}
-                      colorVariant="secondary"
-                    >
-                      Update
-                    </Button>
-                    <Button
-                      onClick={() => handleDelete(entity.id)}
-                      colorVariant="header"
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+            {currentItems.map((entity) => (
+              <TableRow
+                key={entity.id}
+                onClick={() => handleEntityClick(entity.id)}
+                style={{ cursor: "pointer" }}
+              >
+                <TableCell>{entity.id}</TableCell>
+                <TableCell>{entity.name}</TableCell>
+                <TableCell>{entity.position}</TableCell>
+                <TableCell>{entity.company.name}</TableCell>
+                <TableCell sx={{ display: "flex", gap: "8px" }}>
+                  <Button
+                    onClick={() => handleUpdate(entity.id)}
+                    colorVariant="secondary"
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    onClick={() => handleDelete(entity.id)}
+                    colorVariant="header"
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <Pagination
+        count={Math.ceil(entities.length / itemsPerPage)}
+        page={currentPage}
+        onChange={(event, value) => paginate(value)}
+      />
     </>
   );
 }
