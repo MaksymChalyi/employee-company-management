@@ -1,32 +1,8 @@
-// import {
-//   ADD_EMPLOYEE,
-//   DELETE_EMPLOYEE,
-//   UPDATE_EMPLOYEE,
-// } from "../constants/actionTypes";
-
-// const initialState = {
-//   employees: [], // Масив для зберігання сутностей співробітників
-// };
-
-// const employee = (state = initialState, action) => {
-//   switch (action.type) {
-//     case ADD_EMPLOYEE:
-//       return {
-//         ...state,
-//         employees: [...state.employees, action.payload],
-//       };
-//     case UPDATE_EMPLOYEE:
-//       // Логіка оновлення сутності Employee
-//       return state;
-//     case DELETE_EMPLOYEE:
-//       // Логіка видалення сутності Employee
-//       return state;
-//     default:
-//       return state;
-//   }
-// };
-
-// export default employee;
+import {
+  FETCH_EMPLOYEES_REQUESTED,
+  FETCH_EMPLOYEES_SUCCEEDED,
+  FETCH_EMPLOYEES_FAILED,
+} from "../constants/actionTypes";
 
 import axios from "axios";
 
@@ -35,10 +11,6 @@ const initialState = {
   employees: [],
   error: "",
 };
-
-const FETCH_EMPLOYEES_REQUESTED = "FETCH_EMPLOYEES_REQUESTED";
-const FETCH_EMPLOYEES_SUCCEEDED = "FETCH_EMPLOYEES_SUCCEEDED";
-const FETCH_EMPLOYEES_FAILED = "FETCH_EMPLOYEES_FAILED";
 
 const fetchUserRequest = () => {
   return {
