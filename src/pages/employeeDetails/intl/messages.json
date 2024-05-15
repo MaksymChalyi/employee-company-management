@@ -8,6 +8,9 @@
   "company.id": "Id",
   "company.name": "Name of company",
   "company.industry": "Industry",
-  "employee.actions": "Actions"
-
+  "employee.actions": "Actions",
+  "field.name": "Name",
+  "field.age": "Age",
+  "field.position": "Position",
+  "employees.tableTitle": "List Of Employee"
 }

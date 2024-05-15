@@ -10,5 +10,9 @@
   "company.industry": "Industry",
   "employee.actions": "Actions",
   "btn.addEmployee": "Add Employee",
-  "btn.applyFilter": "Apply Filter"
+  "btn.applyFilter": "Apply Filter",
+  "field.name": "Name",
+  "field.age": "Age",
+  "field.position": "Position",
+  "employees.tableTitle": "List Of Employee"
 }

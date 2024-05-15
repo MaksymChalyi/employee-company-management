@@ -9,6 +9,9 @@
   "company.name": "Назва компанії",
   "company.industry": "Сфера",
   "employee.actions": "Дії",
-  "btn.addEmployee": "Додати співробітника"
+  "btn.addEmployee": "Додати співробітника",
+  "field.name": "Ім'я",
+  "field.age": "Вік",
+  "field.position": "Посада"
 
 }

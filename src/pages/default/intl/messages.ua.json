@@ -10,5 +10,9 @@
   "company.industry": "Сфера",
   "employee.actions": "Дії",
   "btn.addEmployee": "Додати співробітника",
-  "btn.applyFilter": "Застосувати фільтр"
+  "btn.applyFilter": "Застосувати фільтр",
+  "field.name": "Ім'я",
+  "field.age": "Вік",
+  "field.position": "Посада",
+  "employees.tableTitle": "Список співробітників"
 }
