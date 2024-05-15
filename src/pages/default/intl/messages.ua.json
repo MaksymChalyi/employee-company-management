@@ -16,5 +16,8 @@
   "field.position": "Посада",
   "employees.tableTitle": "Список співробітників",
   "btn.update": "Оновити",
-  "btn.delete": "Видалити"
+  "btn.delete": "Видалити",
+  "dialog.deleteContent": "Ви впевнені ?",
+  "btn.confirm": "ОК",
+  "btn.cancel": "Скасувати"
 }

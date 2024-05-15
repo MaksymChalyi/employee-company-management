@@ -16,5 +16,8 @@
   "field.position": "Position",
   "employees.tableTitle": "List Of Employee",
   "btn.update": "Update",
-  "btn.delete": "Delete"
+  "btn.delete": "Delete",
+  "dialog.deleteContent": "Are you sure ?",
+  "btn.confirm": "CONFIRM",
+  "btn.cancel": "CANCEL"
 }
