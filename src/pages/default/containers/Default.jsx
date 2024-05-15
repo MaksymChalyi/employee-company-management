@@ -104,13 +104,12 @@ function Default() {
           </Grid>
         </Grid>
         <div
-            style={{ display: "flex", justifyContent: "flex-end", margin: "5px" }}
+            style={{ display: "flex", justifyContent: "flex-end", margin: "5px", gap: "8px" }}
         >
           <Button
               variant="contained"
               color="secondary"
               onClick={handleAdd}
-              sx={{ marginRight: 1 }}
           >
             {formatMessage({ id: 'btn.addEmployee' })}
           </Button>
