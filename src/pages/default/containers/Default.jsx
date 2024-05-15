@@ -21,10 +21,11 @@ import Button from "components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmployees } from "app/reducers/emloyee";
 import { useIntl } from "react-intl";
-import {Link} from "react-router-dom";
+import {createSearchParams, Link, useNavigate} from "react-router-dom";
 
 function Default() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -48,7 +49,7 @@ function Default() {
   };
 
   const handleEntityClick = (id) => {
-    // Your logic for showing entity details
+    navigate("/employeeDetails/" + id)
   };
 
   const handleAdd = () => {
@@ -158,9 +159,7 @@ function Default() {
                   >
 
                       <TableCell>{entity.id}</TableCell>
-                    <TableCell>
-                      <Link to={`/employeeDetails/${entity.id}`}>{entity.name}</Link>
-                    </TableCell>
+                    <TableCell>{entity.name}</TableCell>
                       <TableCell>{entity.position}</TableCell>
                       <TableCell>{entity.company.name}</TableCell>
                     <TableCell sx={{ display: "flex", gap: "8px" }}>

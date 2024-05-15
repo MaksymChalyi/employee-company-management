@@ -20,7 +20,7 @@ import Typography from "components/Typography";
 import Button from "components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import {fetchEmployees} from "app/reducers/emloyee";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useIntl} from "react-intl";
 
 const employee = {
@@ -44,6 +44,8 @@ function EmployeeDetails() {
   const {employees, loading, error} = useSelector(state => state.employee);
     const {id} = useParams();
 
+    const navigate = useNavigate()
+
   const dispatch = useDispatch();
   const {formatMessage} = useIntl();
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
@@ -53,7 +55,7 @@ function EmployeeDetails() {
 
 
     useEffect(() => {
-        if(!loading) {
+        if(!loading && !error) {
             const currentEmployee = employees.find(item => item.id == id);
             const {name, age, position, experienceYears} = currentEmployee;
             setFormData({name, age, position, experienceYears})
@@ -81,6 +83,14 @@ function EmployeeDetails() {
     // setDeleteDialogOpen(false);
   };
 
+    const handleSave = () => {
+        setSaveDialogOpen(true);
+    }
+
+  const handleCancel = () => {
+      navigate("/default")
+    }
+
   const handleUpdate = (id) => {
     const updatedEmployee = {};
     // dispatch(updateEmployee(updatedEmployee));
@@ -92,10 +102,6 @@ function EmployeeDetails() {
     // dispatch(addEmployee(newEmployee));
   };
 
-  useEffect(() => {
-    // Your logic for fetching initial data
-    // dispatch(fetchEmployees());
-  }, []);
 
   if(loading) {
       return <div>Loading</div>
@@ -138,6 +144,16 @@ function EmployeeDetails() {
                         onChange={(e) => handleChange("experienceYears", e.target.value)}
                         fullWidth
                     />
+                    <Grid container spacing={1} columnSpacing={2}>
+                        <Grid item sm={7}></Grid>
+                        <Grid item sm={2}>
+                            <Button variant="outline" onClick={handleSave}>Зберегти</Button>
+                        </Grid>
+                        <Grid item sm={2}>
+                            <Button variant="outline" onClick={handleCancel}>Скасувати</Button>
+
+                        </Grid>
+                    </Grid>
                 </Stack>
             </Grid>
             <Grid item xs={6} sm={6}>
@@ -178,7 +194,10 @@ function EmployeeDetails() {
                     }
                 </Stack>
             </Grid>
+
         </Grid>
+
+
 
       <Dialog
           open={saveDialogOpen}
