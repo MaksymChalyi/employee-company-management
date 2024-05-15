@@ -20,6 +20,7 @@ import Typography from "components/Typography";
 import Button from "components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmployees } from "app/reducers/emloyee";
+import { useIntl } from "react-intl";
 
 function Default() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function Default() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEntityId, setSelectedEntityId] = useState(null);
+  const { formatMessage } = useIntl();
 
   const handleDelete = (id) => {
     setSelectedEntityId(id);
@@ -71,110 +73,142 @@ function Default() {
   useEffect(() => {
     // Your logic for fetching initial data
     dispatch(fetchEmployees());
-  }, []);
+  }, [dispatch]);
 
   return (
-    <>
-      <Typography variant="h5" gutterBottom align="center">
-        <h2>Employees Table</h2>
-      </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
-          <TextField label="Name" variant="outlined" fullWidth />
+      <>
+        <Typography variant="h5" gutterBottom align="center">
+          <h2>{formatMessage({ id: 'employees.tableTitle' })}</h2>
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={4}>
+            <TextField
+                label={formatMessage({ id: 'field.name' })}
+                variant="outlined"
+                fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+                label={formatMessage({ id: 'field.age' })}
+                variant="outlined"
+                fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+                label={formatMessage({ id: 'field.position' })}
+                variant="outlined"
+                fullWidth
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField label="Age" variant="outlined" fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField label="Position" variant="outlined" fullWidth />
-        </Grid>
-      </Grid>
-      <div
-        style={{ display: "flex", justifyContent: "flex-end", margin: "5px" }}
-      >
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleAdd}
-          sx={{ marginRight: 1 }}
+        <div
+            style={{ display: "flex", justifyContent: "flex-end", margin: "5px" }}
         >
-          Add Employee
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleApplyFilter}
-        >
-          Apply Filter
-        </Button>
-      </div>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Position</TableCell>
-              <TableCell>Company</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {currentItems.map((entity) => (
-              <TableRow
-                key={entity.id}
-                onClick={() => handleEntityClick(entity.id)}
-                style={{ cursor: "pointer" }}
-              >
-                <TableCell>{entity.id}</TableCell>
-                <TableCell>{entity.name}</TableCell>
-                <TableCell>{entity.position}</TableCell>
-                <TableCell>{entity.company.name}</TableCell>
-                <TableCell sx={{ display: "flex", gap: "8px" }}>
-                  <Button
-                    onClick={() => handleUpdate(entity.id)}
-                    colorVariant="secondary"
-                  >
-                    Update
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(entity.id)}
-                    colorVariant="header"
-                  >
-                    Delete
-                  </Button>
+          <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleAdd}
+              sx={{ marginRight: 1 }}
+          >
+            {formatMessage({ id: 'btn.addEmployee' })}
+          </Button>
+          <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleApplyFilter}
+          >
+            {formatMessage({ id: 'btn.applyFilter' })}
+          </Button>
+        </div>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography>
+                    {formatMessage({ id: 'employee.id' })}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>
+                    {formatMessage({ id: 'employee.name' })}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>
+                    {formatMessage({ id: 'employee.position' })}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>
+                    {formatMessage({ id: 'company.name' })}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>
+                    {formatMessage({ id: 'employee.actions' })}
+                  </Typography>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Pagination
-        count={Math.ceil(entities.length / itemsPerPage)}
-        page={currentPage}
-        onChange={(event, value) => paginate(value)}
-      />
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
-      >
-        <DialogTitle>Delete Entity</DialogTitle>
-        <DialogContent>
-          Are you sure you want to delete this entity?
-        </DialogContent>
-        <DialogActions>
-          <MuiButton
-            onClick={() => setDeleteDialogOpen(false)}
-            color="secondary"
-          >
-            Cancel
-          </MuiButton>
-          <MuiButton onClick={handleDeleteConfirm} color="primary">
-            Confirm
-          </MuiButton>
-        </DialogActions>
-      </Dialog>
-    </>
+            </TableHead>
+            <TableBody>
+              {currentItems.map((entity) => (
+                  <TableRow
+                      key={entity.id}
+                      onClick={() => handleEntityClick(entity.id)}
+                      style={{ cursor: "pointer" }}
+                  >
+                    <TableCell>{entity.id}</TableCell>
+                    <TableCell>{entity.name}</TableCell>
+                    <TableCell>{entity.position}</TableCell>
+                    <TableCell>{entity.company.name}</TableCell>
+                    <TableCell sx={{ display: "flex", gap: "8px" }}>
+                      <Button
+                          onClick={() => handleUpdate(entity.id)}
+                          colorVariant="secondary"
+                      >
+                        {formatMessage({ id: 'btn.update' })}
+                      </Button>
+                      <Button
+                          onClick={() => handleDelete(entity.id)}
+                          colorVariant="header"
+                      >
+                        {formatMessage({ id: 'btn.delete' })}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Pagination
+            count={Math.ceil(entities.length / itemsPerPage)}
+            page={currentPage}
+            onChange={(event, value) => paginate(value)}
+        />
+        <Dialog
+            open={deleteDialogOpen}
+            onClose={() => setDeleteDialogOpen(false)}
+        >
+          <DialogTitle>{formatMessage({ id: 'dialog.deleteTitle' })}</DialogTitle>
+          <DialogContent>
+            {formatMessage({ id: 'dialog.deleteContent' })}
+          </DialogContent>
+          <DialogActions>
+            <MuiButton
+                onClick={() => setDeleteDialogOpen(false)}
+                color="secondary"
+            >
+              {formatMessage({ id: 'btn.cancel' })}
+            </MuiButton>
+            <MuiButton onClick={handleDeleteConfirm} color="primary">
+              {formatMessage({ id: 'btn.confirm' })}
+            </MuiButton>
+          </DialogActions>
+        </Dialog>
+      </>
   );
 }
 

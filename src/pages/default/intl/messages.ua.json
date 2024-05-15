@@ -1,3 +1,14 @@
 {
-  "title": "Це перша сторінка, яку побачать відвідувачі вашого сайту, розмістіть тут усю необхідну для них інформацію"
+  "employee.id": "ID",
+  "employee.name": "Ім'я",
+  "employee.age": "Вік",
+  "employee.position": "Посада",
+  "employee.experienceYear": "Роки досвіду",
+  "employee.interests": "Інтереси",
+  "company.id": "Id",
+  "company.name": "Назва компанії",
+  "company.industry": "Сфера",
+  "employee.actions": "Дії",
+  "btn.addEmployee": "Додати співробітника",
+  "btn.applyFilter": "Застосувати фільтр"
 }

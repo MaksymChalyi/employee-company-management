@@ -1,3 +1,14 @@
 {
-  "title": "This is the first page that visitors to your site will see, place all the information they need here"
+  "employee.id": "ID",
+  "employee.name": "Name",
+  "employee.age": "Age",
+  "employee.position": "Position",
+  "employee.experienceYear": "Experience Year",
+  "employee.interests": "Interests",
+  "company.id": "Id",
+  "company.name": "Name of company",
+  "company.industry": "Industry",
+  "employee.actions": "Actions",
+  "btn.addEmployee": "Add Employee",
+  "btn.applyFilter": "Apply Filter"
 }
