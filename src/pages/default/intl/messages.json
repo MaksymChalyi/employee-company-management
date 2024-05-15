@@ -14,5 +14,7 @@
   "field.name": "Name",
   "field.age": "Age",
   "field.position": "Position",
-  "employees.tableTitle": "List Of Employee"
+  "employees.tableTitle": "List Of Employee",
+  "btn.update": "Update",
+  "btn.delete": "Delete"
 }

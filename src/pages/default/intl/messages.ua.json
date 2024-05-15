@@ -14,5 +14,7 @@
   "field.name": "Ім'я",
   "field.age": "Вік",
   "field.position": "Посада",
-  "employees.tableTitle": "Список співробітників"
+  "employees.tableTitle": "Список співробітників",
+  "btn.update": "Оновити",
+  "btn.delete": "Видалити"
 }
