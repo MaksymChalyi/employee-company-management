@@ -1,4 +1,4 @@
 export const defaultPage = "default";
 export const login = "login";
 export const secretPage = "secret";
-export const employeeDetails = "employeeDetails";
+export const employeeDetails = "employeeDetails/:id";

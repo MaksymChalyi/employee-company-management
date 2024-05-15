@@ -19,5 +19,6 @@
   "btn.delete": "Delete",
   "dialog.deleteContent": "Are you sure ?",
   "btn.confirm": "CONFIRM",
-  "btn.cancel": "CANCEL"
+  "btn.cancel": "CANCEL",
+  "dialog.deleteTitle": "Delete entity"
 }

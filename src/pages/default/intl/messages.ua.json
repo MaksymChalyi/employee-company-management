@@ -19,5 +19,6 @@
   "btn.delete": "Видалити",
   "dialog.deleteContent": "Ви впевнені ?",
   "btn.confirm": "ОК",
-  "btn.cancel": "Скасувати"
+  "btn.cancel": "Скасувати",
+  "dialog.deleteTitle": "Видалення сутності"
 }

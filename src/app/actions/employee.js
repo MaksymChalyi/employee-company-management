@@ -4,6 +4,7 @@ import {
   DELETE_EMPLOYEE,
   UPDATE_EMPLOYEE,
   GET_EMPLOYEES,
+  DELETE_EMPLOYEE_SUCCEEDED,
 } from "./actionTypes";
 
 // Action creators
@@ -26,3 +27,4 @@ export const getEmployees = (employees) => ({
   type: GET_EMPLOYEES,
   payload: employees,
 });
+

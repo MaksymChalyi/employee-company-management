@@ -2,6 +2,7 @@ import {
   FETCH_EMPLOYEES_REQUESTED,
   FETCH_EMPLOYEES_SUCCEEDED,
   FETCH_EMPLOYEES_FAILED,
+  DELETE_EMPLOYEE_SUCCEEDED,
 } from "../constants/actionTypes";
 
 import axios from "axios";
@@ -51,6 +52,11 @@ export default function reducer(state = initialState, action) {
         employees: [],
         error: action.payload,
       };
+    case DELETE_EMPLOYEE_SUCCEEDED:
+      return {
+        ...state,
+        employees: state.employees.filter(emp => emp.id !== action.payload),
+      };
     default:
       return state; // Ensure to return the state for any other action type
   }
@@ -74,3 +80,18 @@ export const fetchEmployees = () => {
       });
   };
 };
+
+// export const fetchEmployeeById = (id) => {
+//   return function (dispatch) {
+//     dispatch(fetchUserRequest());
+//     axios.get("http://localhost:8080/api/employee/" + id)
+//         .then((response) => {
+//           console.log(response)
+//           dispatch(fetchUserSuccess(response.content));
+//         })
+//         .catch((error) => {
+//           //error.message is the error message
+//           dispatch(fetchUsersFailure(error.message));
+//         });
+//   };
+// };

@@ -21,6 +21,7 @@ import Button from "components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmployees } from "app/reducers/emloyee";
 import { useIntl } from "react-intl";
+import {Link} from "react-router-dom";
 
 function Default() {
   const dispatch = useDispatch();
@@ -70,10 +71,6 @@ function Default() {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  useEffect(() => {
-    // Your logic for fetching initial data
-    dispatch(fetchEmployees());
-  }, [dispatch]);
 
   return (
       <>
@@ -159,10 +156,13 @@ function Default() {
                       onClick={() => handleEntityClick(entity.id)}
                       style={{ cursor: "pointer" }}
                   >
-                    <TableCell>{entity.id}</TableCell>
-                    <TableCell>{entity.name}</TableCell>
-                    <TableCell>{entity.position}</TableCell>
-                    <TableCell>{entity.company.name}</TableCell>
+
+                      <TableCell>{entity.id}</TableCell>
+                    <TableCell>
+                      <Link to={`/employeeDetails/${entity.id}`}>{entity.name}</Link>
+                    </TableCell>
+                      <TableCell>{entity.position}</TableCell>
+                      <TableCell>{entity.company.name}</TableCell>
                     <TableCell sx={{ display: "flex", gap: "8px" }}>
                       <Button
                           onClick={() => handleUpdate(entity.id)}

@@ -9,8 +9,10 @@
   "company.name": "Name of company",
   "company.industry": "Industry",
   "employee.actions": "Actions",
-  "field.name": "Name",
-  "field.age": "Age",
-  "field.position": "Position",
-  "employees.tableTitle": "List Of Employee"
+  "employees.pageTitle": "Employee Description",
+  "btn.confirm": "CONFIRM",
+  "btn.cancel": "CANCEL",
+  "dialog.confirmAddTitle": "Add entity",
+  "dialog.confirmUpdateTitle": "Update entity",
+  "dialog.confirmContent": "Are you sure ?"
 }

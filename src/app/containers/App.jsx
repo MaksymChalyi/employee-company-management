@@ -19,6 +19,7 @@ import Header from "../components/Header";
 import IntlProvider from "../components/IntlProvider";
 import MissedPage from "../components/MissedPage";
 import SearchParamsConfigurator from "../components/SearchParamsConfigurator";
+import {fetchEmployees} from "../reducers/emloyee";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,11 @@ function App() {
       componentDidMount: true,
     });
   }, []);
+
+  useEffect(() => {
+    // Your logic for fetching initial data
+    dispatch(fetchEmployees());
+  }, [dispatch]);
 
   return (
     <UserProvider>

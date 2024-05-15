@@ -12,6 +12,10 @@
   "btn.addEmployee": "Додати співробітника",
   "field.name": "Ім'я",
   "field.age": "Вік",
-  "field.position": "Посада"
-
+  "field.position": "Посада",
+  "btn.confirm": "Ок",
+  "btn.cancel": "Скасувати",
+  "dialog.confirmAddTitle": "Додати співробітника",
+  "dialog.confirmUpdateTitle": "Оновити співробітника",
+  "dialog.confirmContent": "Ви впевнені ?"
 }
