@@ -10,7 +10,7 @@ import {
   FETCH_UPDATE_EMPLOYEE_SUCCEEDED,
   FETCH_UPDATE_EMPLOYEE_REQUESTED,
   CLEAR_LAST_CREATED,
-  DELETE_EMPLOYEE_REQUESTED, DELETE_EMPLOYEE_FAILED,
+  DELETE_EMPLOYEE_REQUESTED, DELETE_EMPLOYEE_FAILED, ADD_FETCHED_PAGES,
 } from "../constants/actionTypes";
 
 import axios from "axios";
@@ -20,6 +20,8 @@ const initialState = {
   employees: [],
   lastCreated: {},
   totalCount: 0,
+  totalPages: 0,
+  fetchedPages: [0],
   error: "",
 };
 
@@ -106,7 +108,6 @@ const deleteEmployeeFailure = (error) => {
   }
 }
 
-
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_EMPLOYEES_REQUESTED:
@@ -121,6 +122,7 @@ export default function reducer(state = initialState, action) {
         loading: false,
         employees: [...state.employees, ...action.payload.content],
         totalCount: action.payload.totalElements,
+        totalPages: action.payload.totalPages,
         error: ""
       };
     case FETCH_EMPLOYEES_FAILED:
@@ -188,7 +190,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: false,
         error: action.payload,
-      };
+      }
     default:
       return state; // Ensure to return the state for any other action type
   }
@@ -204,12 +206,8 @@ export const fetchEmployees = (page = 0) => {
         }
       })
       .then(async (response) => {
-        //response.data is the users
-        // const users = response.data.map((user) => user.id);
         console.log("response", response);
-        if(response.message) {
-          dispatch(fetchUsersFailure(response.message));
-        }
+
         await dispatch(fetchUserSuccess(response));
       })
       .catch((error) => {
@@ -218,6 +216,7 @@ export const fetchEmployees = (page = 0) => {
       });
   };
 };
+
 
 export const fetchAddEmployee = (employee) => {
   return function (dispatch) {
@@ -258,6 +257,10 @@ export const deleteEmployee = (id) => {
         .delete("http://localhost:8080/api/employee/" + id)
         .then((response) => {
           console.log("response", response);
+          if(response.message) {
+            dispatch(deleteEmployeeFailure(response.message));
+            return
+          }
           dispatch(deleteEmployeeSuccess(id));
         })
         .catch((error) => {

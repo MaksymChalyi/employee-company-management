@@ -27,10 +27,14 @@ import {useNavigate} from "react-router-dom";
 import {TrashIcon} from "@radix-ui/react-icons";
 import IconButton from "../../../components/IconButton";
 
-function Default() {
+function Default({fetchedPages, handleFetchedPage}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {employees: entities, totalPages, loading, error} = useSelector(state => state.employee)
+  const [filteredEmployees, setFilteredEmployees] = useState([0])
+
   const [currentPage, setCurrentPage] = useState(1);
+
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEntityId, setSelectedEntityId] = useState(null);
@@ -38,6 +42,27 @@ function Default() {
   const [age, setAge] = useState("");
   const [position, setPosition] = useState("");
   const { formatMessage } = useIntl();
+
+  useEffect(() => {
+    console.log("fetched", fetchedPages)
+    console.log(name)
+    console.log(age)
+    console.log(position)
+    if(filteredEmployees.length === entities.length) {
+      if(currentPage - 1 !== totalPages) {
+        if(!fetchedPages.includes(currentPage - 1)) {
+          dispatch(fetchEmployees(currentPage - 1 ))
+          handleFetchedPage(currentPage - 1)
+        }
+      }
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    if(!loading) {
+      setFilteredEmployees(entities)
+    }
+  }, [loading])
 
   useEffect(() =>{
     setName(localStorage.getItem("name") || "");
@@ -50,7 +75,7 @@ function Default() {
     localStorage.setItem("name", name);
     localStorage.setItem("age", age);
     localStorage.setItem("position", position);
-    localStorage.setItem("currentPage", currentPage)
+    localStorage.setItem("currentPage", currentPage);
   }, [currentPage, name, age, position]);
 
   const handleDelete = (id) => {
@@ -73,27 +98,23 @@ function Default() {
   };
 
   const handleApplyFilter = () => {
-    // Your logic for applying filter
-  };
+    setFilteredEmployees( entities.filter(item => {
+      const matchName = name ? item.name === name : true;
+      const matchAge = age ? item.age == age : true;
+      const matchPosition = position ? item.position === position : true;
 
-  const entities = useSelector(({ employee }) => employee.employees);
-  const totalCount = useSelector(({ employee }) => employee.totalCount);
-  const error = useSelector(({ employee }) => employee.error);
-
+      return matchName || matchAge || matchPosition;
+    }));
+    setCurrentPage(1)
+    console.log("entities", entities)
+    console.log("filteredEmployees", filteredEmployees)
+  }
 
   // Logic for pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  if(entities && entities.length > 0) {
-    if(entities.length <= indexOfLastItem) {
-      if (entities.length < totalCount) {
-        dispatch(fetchEmployees(currentPage))
-      }
-    }
-  }
-
-  const currentItems = entities.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredEmployees.slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -219,7 +240,7 @@ function Default() {
           </Table>
         </TableContainer>
         <Pagination
-            count={Math.ceil(entities.length / itemsPerPage)}
+            count={(currentPage !== totalPages) && filteredEmployees.length === entities.length ? Math.ceil(filteredEmployees.length / itemsPerPage) + 1: Math.ceil(filteredEmployees.length / itemsPerPage)}
             page={currentPage}
             onChange={(event, value) => paginate(value)}
         />

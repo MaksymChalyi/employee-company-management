@@ -35,6 +35,11 @@ function App() {
     isFetchingSignUp,
     isFetchingUser,
   } = useSelector(({ user }) => user);
+  const [fetchedPages, setFetchedPages] = useState([0]);
+
+  const handleFetchedPage = (page) => {
+    setFetchedPages([...fetchedPages, page]);
+  }
 
   useEffect(() => {
     addAxiosInterceptors({
@@ -50,7 +55,7 @@ function App() {
   useEffect(() => {
     // Your logic for fetching initial data
     dispatch(fetchEmployees());
-  }, [dispatch]);
+  }, []);
 
   return (
     <UserProvider>
@@ -72,7 +77,7 @@ function App() {
                 {!isFetchingUser && (
                   <Routes>
                     <Route
-                      element={<DefaultPage />}
+                      element={<DefaultPage fetchedPages={fetchedPages} handleFetchedPage={handleFetchedPage}/>}
                       path={`${pageURLs[pages.defaultPage]}`}
                     />
                     <Route

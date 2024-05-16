@@ -19,22 +19,6 @@ import {useIntl} from "react-intl";
 import {ArrowLeftIcon, Pencil1Icon} from "@radix-ui/react-icons";
 import IconButton from "../../../components/IconButton";
 
-const employee = {
-  "id": 2,
-      "name": "Elizabeth",
-      "age": 29,
-      "position": "Software Engineer",
-      "experienceYears": 3,
-      "interests": [
-          "reading",
-          "travelling"
-  ],
-      "company": {
-    "id": 1,
-        "name": "Google",
-        "industry": "Consulting"
-  }
-}
 
 function EmployeeDetails() {
   const {employees, loading, error, lastCreated} = useSelector(state => state.employee);
