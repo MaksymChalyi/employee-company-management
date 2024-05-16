@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchEmployees } from "app/reducers/emloyee";
 import { useIntl } from "react-intl";
 import {createSearchParams, Link, useNavigate} from "react-router-dom";
+import {TrashIcon} from "@radix-ui/react-icons";
+import IconButton from "../../../components/IconButton";
 
 function Default() {
   const dispatch = useDispatch();
@@ -62,19 +64,20 @@ function Default() {
 
   const entities = useSelector(({ employee }) => employee.employees);
   const totalCount = useSelector(({ employee }) => employee.totalCount);
-  console.log("totalCount: ", totalCount)
-  console.log("employees", entities.length);
 
 
   // Logic for pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  if(entities.length <= indexOfLastItem) {
-    if (entities.length < totalCount) {
-      dispatch(fetchEmployees(currentPage))
+  if(entities && entities.length > 0) {
+    if(entities.length <= indexOfLastItem) {
+      if (entities.length < totalCount) {
+        dispatch(fetchEmployees(currentPage))
+      }
     }
   }
+
   const currentItems = entities.slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
@@ -163,26 +166,21 @@ function Default() {
                   <TableRow
                       key={entity.id}
                       onClick={() => handleEntityClick(entity.id)}
-                      style={{ cursor: "pointer" }}
-                  >
-
+                      style={{ cursor: "pointer" }}>
                       <TableCell>{entity.id}</TableCell>
                     <TableCell>{entity.name}</TableCell>
                       <TableCell>{entity.position}</TableCell>
                       <TableCell>{entity.company?.name}</TableCell>
                     <TableCell sx={{ display: "flex", gap: "8px" }}>
-                      <Button
-                          onClick={() => handleUpdate(entity.id)}
+                      <IconButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(entity.id)
+                          }}
                           colorVariant="secondary"
                       >
-                        {formatMessage({ id: 'btn.update' })}
-                      </Button>
-                      <Button
-                          onClick={() => handleDelete(entity.id)}
-                          colorVariant="header"
-                      >
-                        {formatMessage({ id: 'btn.delete' })}
-                      </Button>
+                        <TrashIcon width={25} height={25} />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
               ))}
