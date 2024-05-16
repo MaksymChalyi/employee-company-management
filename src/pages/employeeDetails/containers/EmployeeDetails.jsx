@@ -28,6 +28,7 @@ function EmployeeDetails() {
   const {formatMessage} = useIntl();
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [edit, setEdit] = useState(!id);
+  const [alertSuccess, setAlertSuccess] = useState(false)
   const [formData, setFormData] = useState({});
   const [interests, setInterests] = useState([""])
   const [company, setCompany] = useState({})
@@ -72,9 +73,12 @@ function EmployeeDetails() {
   const handleSaveConfirm = () => {
     if(id) {
         handleUpdate()
+        setAlertSuccess(true)
+        setTimeout(() => setAlertSuccess(false), 3000)
     } else {
         handleAdd()
     }
+      setEdit(false)
       setSaveDialogOpen(false);
   };
 
@@ -152,6 +156,15 @@ function EmployeeDetails() {
             </Grid>
 
             <Grid container spacing={2}>
+                {
+                    !error && alertSuccess && (
+                        <Grid item sm={12}>
+                            <Alert severity="success">
+                                Employee was successfully updated.
+                            </Alert>
+                        </Grid>
+                    )
+                }
                 {
                     error && (
                         <Grid item sm={12}>

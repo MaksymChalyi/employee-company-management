@@ -181,6 +181,7 @@ export default function reducer(state = initialState, action) {
         loading: true
       };
     case DELETE_EMPLOYEE_SUCCEEDED:
+      console.log("payload", action.payload)
       return {
         ...state,
         employees: state.employees.filter(emp => emp.id !== action.payload),
@@ -212,13 +213,13 @@ export const fetchEmployees = (page = 0) => {
       })
       .catch((error) => {
         //error.message is the error message
-         dispatch(fetchUserSuccess({
-          content: MOCK_FETCH_EMPLOYEES[page],
-          totalPages: 3,
-           totalElements: 15
-        }));
+        //  dispatch(fetchUserSuccess({
+        //   content: MOCK_FETCH_EMPLOYEES[page],
+        //   totalPages: 3,
+        //    totalElements: 15
+        // }));
 
-        // dispatch(fetchUsersFailure(error.message));
+        dispatch(fetchUsersFailure(error.message));
       });
   };
 };
@@ -235,12 +236,12 @@ export const fetchAddEmployee = (employee) => {
         })
         .catch((error) => {
           //error.message is the error message
-          dispatch(fetchAddEmployeeSuccess({
-            id: 100,
-            ...employee
-          }));
+          // dispatch(fetchAddEmployeeSuccess({
+          //   id: 100,
+          //   ...employee
+          // }));
 
-          // dispatch(fetchAddEmployeeFailure(error.message));
+          dispatch(fetchAddEmployeeFailure(error.message));
         });
   };
 };
@@ -252,13 +253,16 @@ export const fetchUpdateEmployee = (id, employee) => {
         .put("http://localhost:8080/api/employee/" + id, employee)
         .then((response) => {
           console.log("response", response);
-          dispatch(fetchUpdateEmployeeSuccess(id));
+          dispatch(fetchUpdateEmployeeSuccess(response));
         })
         .catch((error) => {
           //error.message is the error message
-          dispatch(fetchUpdateEmployeeSuccess(id));
+          // dispatch(fetchUpdateEmployeeSuccess({
+          //   id,
+          //   ...employee
+          // }));
 
-          // dispatch(fetchUpdateEmployeeFailure(error.message));
+          dispatch(fetchUpdateEmployeeFailure(error.message));
         });
   };
 };
@@ -278,9 +282,9 @@ export const deleteEmployee = (id) => {
         })
         .catch((error) => {
           //error.message is the error message
-          dispatch(deleteEmployeeSuccess(id));
+          // dispatch(deleteEmployeeSuccess(id));
 
-          // dispatch(deleteEmployeeFailure(error.message));
+          dispatch(deleteEmployeeFailure(error.message));
         });
   };
 };

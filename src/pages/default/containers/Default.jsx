@@ -31,6 +31,7 @@ function Default({fetchedPages, handleFetchedPage}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {employees: entities, totalPages, loading, error} = useSelector(state => state.employee)
+  console.log(entities)
   const [filteredEmployees, setFilteredEmployees] = useState([0])
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,10 +45,6 @@ function Default({fetchedPages, handleFetchedPage}) {
   const { formatMessage } = useIntl();
 
   useEffect(() => {
-    console.log("fetched", fetchedPages)
-    console.log(name)
-    console.log(age)
-    console.log(position)
     if(filteredEmployees.length === entities.length) {
       if(currentPage - 1 !== totalPages) {
         if(!fetchedPages.includes(currentPage - 1)) {
