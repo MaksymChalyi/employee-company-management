@@ -76,8 +76,12 @@ function App() {
                       path={`${pageURLs[pages.defaultPage]}`}
                     />
                     <Route
+                        element={<EmployeeDetailsPage />}
+                        path={`${pageURLs[pages.employeeDetails]}`}
+                    />
+                    <Route
                       element={<EmployeeDetailsPage />}
-                      path={`${pageURLs[pages.employeeDetails]}`}
+                      path={`${pageURLs[pages.employeeDetails]}/:id`}
                     />
                     <Route
                       element={<SecretPage />}
