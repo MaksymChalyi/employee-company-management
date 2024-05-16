@@ -212,7 +212,13 @@ export const fetchEmployees = (page = 0) => {
       })
       .catch((error) => {
         //error.message is the error message
-        dispatch(fetchUsersFailure(error.message));
+         dispatch(fetchUserSuccess({
+          content: MOCK_FETCH_EMPLOYEES[page],
+          totalPages: 3,
+           totalElements: 15
+        }));
+
+        // dispatch(fetchUsersFailure(error.message));
       });
   };
 };
@@ -229,7 +235,12 @@ export const fetchAddEmployee = (employee) => {
         })
         .catch((error) => {
           //error.message is the error message
-          dispatch(fetchAddEmployeeFailure(error.message));
+          dispatch(fetchAddEmployeeSuccess({
+            id: 100,
+            ...employee
+          }));
+
+          // dispatch(fetchAddEmployeeFailure(error.message));
         });
   };
 };
@@ -245,7 +256,9 @@ export const fetchUpdateEmployee = (id, employee) => {
         })
         .catch((error) => {
           //error.message is the error message
-          dispatch(fetchUpdateEmployeeFailure(error.message));
+          dispatch(fetchUpdateEmployeeSuccess(id));
+
+          // dispatch(fetchUpdateEmployeeFailure(error.message));
         });
   };
 };
@@ -265,8 +278,272 @@ export const deleteEmployee = (id) => {
         })
         .catch((error) => {
           //error.message is the error message
-          dispatch(deleteEmployeeFailure(error.message));
+          dispatch(deleteEmployeeSuccess(id));
+
+          // dispatch(deleteEmployeeFailure(error.message));
         });
   };
 };
 
+
+const MOCK_FETCH_EMPLOYEES = [
+    [
+      {
+        "id": 16,
+        "name": "Emily",
+        "age": 35,
+        "position": "Mechanical Engineer",
+        "experienceYears": 4,
+        "interests": [
+          "Meditation"
+        ],
+        "company": {
+          "id": 15,
+          "name": "SpaceX",
+          "industry": "Utilities"
+        }
+      },
+      {
+        "id": 17,
+        "name": "Natalie",
+        "age": 27,
+        "position": "General Manager",
+        "experienceYears": 8,
+        "interests": [
+          "Woodworking"
+        ],
+        "company": {
+          "id": 13,
+          "name": "Netflix",
+          "industry": "Technology"
+        }
+      },
+      {
+        "id": 18,
+        "name": "Daniel",
+        "age": 38,
+        "position": "Web Developer",
+        "experienceYears": 2,
+        "interests": [
+          "Cooking",
+          "Watching Movies"
+        ],
+        "company": {
+          "id": 8,
+          "name": "Volkswagen",
+          "industry": "Consulting"
+        }
+      },
+      {
+        "id": 19,
+        "name": "Victoria",
+        "age": 42,
+        "position": "Procurement Specialist",
+        "experienceYears": 3,
+        "interests": [
+          "Running",
+          "Philosophy"
+        ],
+        "company": {
+          "id": 5,
+          "name": "Siemens",
+          "industry": "Pharmaceutical"
+        }
+      },
+      {
+        "id": 20,
+        "name": "Elizabeth",
+        "age": 65,
+        "position": "Mechanical Engineer",
+        "experienceYears": 3,
+        "interests": [
+          "Thriller",
+          "Playing Guitar",
+          "Crime"
+        ],
+        "company": {
+          "id": 3,
+          "name": "BMW",
+          "industry": "Utilities"
+        }
+      },
+    ],
+    [
+      {
+        "id": 21,
+        "name": "Emily",
+        "age": 25,
+        "position": "Mechanical Engineer",
+        "experienceYears": 2,
+        "interests": [
+          "Meditation"
+        ],
+        "company": {
+          "id": 15,
+          "name": "SpaceX",
+          "industry": "Utilities"
+        }
+      },
+      {
+        "id": 22,
+        "name": "Oleksandr",
+        "age": 20,
+        "position": "General Manager",
+        "experienceYears": 1,
+        "interests": [
+          "Woodworking"
+        ],
+        "company": {
+          "id": 13,
+          "name": "Netflix",
+          "industry": "Technology"
+        }
+      },
+      {
+        "id": 23,
+        "name": "Daniel",
+        "age": 38,
+        "position": "Web Developer",
+        "experienceYears": 2,
+        "interests": [
+          "Cooking",
+          "Watching Movies"
+        ],
+        "company": {
+          "id": 8,
+          "name": "Volkswagen",
+          "industry": "Consulting"
+        }
+      },
+      {
+        "id": 24,
+        "name": "Victoria",
+        "age": 42,
+        "position": "Procurement Specialist",
+        "experienceYears": 3,
+        "interests": [
+          "Running",
+          "Philosophy"
+        ],
+        "company": {
+          "id": 5,
+          "name": "Siemens",
+          "industry": "Pharmaceutical"
+        }
+      },
+      {
+        "id": 25,
+        "name": "Elizabeth",
+        "age": 65,
+        "position": "Mechanical Engineer",
+        "experienceYears": 3,
+        "interests": [
+          "Thriller",
+          "Playing Guitar",
+          "Crime"
+        ],
+        "company": {
+          "id": 3,
+          "name": "BMW",
+          "industry": "Utilities"
+        }
+      },
+    ],
+    [
+      {
+        "id": 26,
+        "name": "Emily",
+        "age": 35,
+        "position": "Mechanical Engineer",
+        "experienceYears": 4,
+        "interests": [
+          "Meditation"
+        ],
+        "company": {
+          "id": 15,
+          "name": "SpaceX",
+          "industry": "Utilities"
+        }
+      },
+      {
+        "id": 27,
+        "name": "Natalie",
+        "age": 27,
+        "position": "General Manager",
+        "experienceYears": 8,
+        "interests": [
+          "Woodworking"
+        ],
+        "company": {
+          "id": 13,
+          "name": "Netflix",
+          "industry": "Technology"
+        }
+      },
+      {
+        "id": 28,
+        "name": "Daniel",
+        "age": 38,
+        "position": "Web Developer",
+        "experienceYears": 2,
+        "interests": [
+          "Cooking",
+          "Watching Movies"
+        ],
+        "company": {
+          "id": 8,
+          "name": "Volkswagen",
+          "industry": "Consulting"
+        }
+      },
+      {
+        "id": 29,
+        "name": "Victoria",
+        "age": 42,
+        "position": "Procurement Specialist",
+        "experienceYears": 3,
+        "interests": [
+          "Running",
+          "Philosophy"
+        ],
+        "company": {
+          "id": 5,
+          "name": "Siemens",
+          "industry": "Pharmaceutical"
+        }
+      },
+      {
+        "id": 30,
+        "name": "Elizabeth",
+        "age": 65,
+        "position": "Mechanical Engineer",
+        "experienceYears": 3,
+        "interests": [
+          "Thriller",
+          "Playing Guitar",
+          "Crime"
+        ],
+        "company": {
+          "id": 3,
+          "name": "BMW",
+          "industry": "Utilities"
+        }
+      }
+    ]
+]
+
+// const MOCK_ADD_EMPLOYEE = {
+//   "id": 100,
+//   "name": "Emily",
+//   "age": 35,
+//   "position": "Mechanical Engineer",
+//   "experienceYears": 4,
+//   "interests": [
+//     "Meditation"
+//   ],
+//   "company": {
+//     "id": 15,
+//     "name": "SpaceX",
+//     "industry": "Utilities"
+//   }
+// }

@@ -23,28 +23,16 @@ This project is a frontend implementation for managing companies and employees, 
     - Includes a "Back" button for returning to the entity list page. Filter and pagination settings remain intact.
 
 
-1. List of Employees:
-
-
-2. Employee Details Page:
-   - Employee Details(View Mode):
-   
-   - Employee Details(Edit Mode):
-
-
-
 **Usage:**
 1. Clone this repository to your local machine.
 2. Build and Run: Build and run the application using Maven or your preferred IDE.
 
 **Screenshots:**
-![img.png](img/img.png)
 
-![img_1.png](img/img_1.png)
 
-![img_2.png](img/img_2.png)
 
-![img_3.png](img/img_3.png)
+
+
 
 **License:**
 This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.

@@ -165,10 +165,10 @@ function EmployeeDetails() {
                 <Grid item xs={6} sm={6}>
                     <Stack spacing={2}>
                         <Typography variant="h3">
-                            Employee Details
+                            {formatMessage({ id: 'employees.pageTitle' })}
                         </Typography>
                         <TextField
-                            label="Name"
+                            label={formatMessage({ id: 'employee.name' })}
                             variant="outlined"
                             value={formData.name}
                             onChange={(e) => handleChange("name", e.target.value)}
@@ -178,7 +178,7 @@ function EmployeeDetails() {
 
                         />
                         <TextField
-                            label="Age"
+                            label={formatMessage({ id: 'employee.age' })}
                             variant="outlined"
                             type="number"
                             min={0}
@@ -189,7 +189,7 @@ function EmployeeDetails() {
                             fullWidth
                         />
                         <TextField
-                            label="Position"
+                            label={formatMessage({ id: 'employee.position' })}
                             variant="outlined"
                             value={formData.position}
                             inputProps={{min: 0}}
@@ -199,7 +199,7 @@ function EmployeeDetails() {
                             fullWidth
                         />
                         <TextField
-                            label="Experience Years"
+                            label={formatMessage({ id: 'employee.experienceYear' })}
                             variant="outlined"
                             type="number"
                             inputProps={{min: 0}}
@@ -214,10 +214,10 @@ function EmployeeDetails() {
                                 <Grid container spacing={1} columnSpacing={2}>
                                     <Grid item sm={7}></Grid>
                                     <Grid item sm={2}>
-                                        <Button variant="outline" type="submit">{!id ? "Створити" : "Зберегти"}</Button>
+                                        <Button variant="outline" type="submit">{!id ? formatMessage({ id: 'btn.add' }) : formatMessage({ id: 'btn.update' })}</Button>
                                     </Grid>
                                     <Grid item sm={2}>
-                                        <Button variant="outline" onClick={handleCancel}>Скасувати</Button>
+                                        <Button variant="outline" onClick={handleCancel}>{formatMessage({ id: 'btn.cancel' })}</Button>
                                     </Grid>
                                 </Grid>
                             )
@@ -227,10 +227,10 @@ function EmployeeDetails() {
                 <Grid item xs={6} sm={6}>
                     <Stack spacing={2}>
                         <Typography variant="h3">
-                            Company
+                            {formatMessage({ id: 'employee.company' })}
                         </Typography>
                         <TextField
-                            label="name"
+                            label={formatMessage({ id: 'company.name' })}
                             variant="outlined"
                             value={company.name}
                             onChange={(e) => handleChangeCompany("name", e.target.value)}
@@ -239,7 +239,7 @@ function EmployeeDetails() {
                             fullWidth
                         />
                         <TextField
-                            label="industry"
+                            label={formatMessage({ id: 'company.industry' })}
                             variant="outlined"
                             value={company.industry}
                             onChange={(e) => handleChangeCompany("industry", e.target.value)}
@@ -248,11 +248,11 @@ function EmployeeDetails() {
                             fullWidth
                         />
                         <Typography variant="h3">
-                            Interests
+                            {formatMessage({ id: 'employee.interests' })}
                         </Typography>
                         {
                             interests.map((item, index) => (<TextField
-                                label="Interest"
+                                label={formatMessage({ id: 'employee.interests' })}
                                 variant="outlined"
                                 value={item}
                                 onChange={(e) => setInterests(interests.map((_, i) => i === index ? e.target.value : _ ))}
@@ -263,7 +263,7 @@ function EmployeeDetails() {
                         }
                         {
                             interests.length !== 3 && edit && (
-                                <Button variant="primary" onClick={() => setInterests([...interests, ""])}>Додати інтерес</Button>
+                                <Button variant="primary" onClick={() => setInterests([...interests, ""])}>{formatMessage({ id: 'btn.interestAdd' })}</Button>
                             )
                         }
                     </Stack>
