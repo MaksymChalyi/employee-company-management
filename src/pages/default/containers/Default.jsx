@@ -103,8 +103,6 @@ function Default({fetchedPages, handleFetchedPage}) {
       return matchName || matchAge || matchPosition;
     }));
     setCurrentPage(1)
-    console.log("entities", entities)
-    console.log("filteredEmployees", filteredEmployees)
   }
 
   // Logic for pagination

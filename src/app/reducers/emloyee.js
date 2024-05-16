@@ -235,7 +235,7 @@ export const fetchAddEmployee = (employee) => {
           dispatch(fetchAddEmployeeSuccess(response));
         })
         .catch((error) => {
-          //error.message is the error message
+          // error.message is the error message
           // dispatch(fetchAddEmployeeSuccess({
           //   id: 100,
           //   ...employee
