@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import {
+  Alert,
+  AlertTitle,
+  Button as MuiButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Pagination,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   TextField,
-  Grid,
-  Pagination,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button as MuiButton,
 } from "@mui/material";
 import Typography from "components/Typography";
 import Button from "components/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchEmployees } from "app/reducers/emloyee";
-import { useIntl } from "react-intl";
-import {createSearchParams, Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteEmployee, fetchEmployees} from "app/reducers/emloyee";
+import {useIntl} from "react-intl";
+import {useNavigate} from "react-router-dom";
 import {TrashIcon} from "@radix-ui/react-icons";
 import IconButton from "../../../components/IconButton";
 
@@ -32,7 +34,24 @@ function Default() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEntityId, setSelectedEntityId] = useState(null);
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [position, setPosition] = useState("");
   const { formatMessage } = useIntl();
+
+  useEffect(() =>{
+    setName(localStorage.getItem("name") || "");
+    setAge(localStorage.getItem("age") || "");
+    setPosition(localStorage.getItem("position") || "");
+    setCurrentPage(parseInt(localStorage.getItem("currentPage")) || 1);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("name", name);
+    localStorage.setItem("age", age);
+    localStorage.setItem("position", position);
+    localStorage.setItem("currentPage", currentPage)
+  }, [currentPage, name, age, position]);
 
   const handleDelete = (id) => {
     setSelectedEntityId(id);
@@ -41,13 +60,8 @@ function Default() {
 
   const handleDeleteConfirm = () => {
     // Dispatch delete action
-    // dispatch(deleteEmployee(selectedEntityId));
+    dispatch(deleteEmployee(selectedEntityId))
     setDeleteDialogOpen(false);
-  };
-
-  const handleUpdate = (id) => {
-    const updatedEmployee = {};
-    // dispatch(updateEmployee(updatedEmployee));
   };
 
   const handleEntityClick = (id) => {
@@ -64,6 +78,7 @@ function Default() {
 
   const entities = useSelector(({ employee }) => employee.employees);
   const totalCount = useSelector(({ employee }) => employee.totalCount);
+  const error = useSelector(({ employee }) => employee.error);
 
 
   // Logic for pagination
@@ -90,10 +105,22 @@ function Default() {
           <h2>{formatMessage({ id: 'employees.tableTitle' })}</h2>
         </Typography>
         <Grid container spacing={2}>
+          {
+              error && (
+                  <Grid item sm={12}>
+                    <Alert severity="error">
+                      <AlertTitle>Error</AlertTitle>
+                      {error}
+                    </Alert>
+                  </Grid>
+              )
+          }
           <Grid item xs={12} sm={4}>
             <TextField
                 label={formatMessage({ id: 'field.name' })}
                 variant="outlined"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 fullWidth
             />
           </Grid>
@@ -101,6 +128,8 @@ function Default() {
             <TextField
                 label={formatMessage({ id: 'field.age' })}
                 variant="outlined"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
                 fullWidth
             />
           </Grid>
@@ -108,6 +137,8 @@ function Default() {
             <TextField
                 label={formatMessage({ id: 'field.position' })}
                 variant="outlined"
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
                 fullWidth
             />
           </Grid>

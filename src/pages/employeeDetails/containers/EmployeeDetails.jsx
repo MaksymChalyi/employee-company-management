@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {
+    Alert, AlertTitle,
     Button as MuiButton,
     Dialog,
     DialogActions,
@@ -12,10 +13,10 @@ import {
 import Typography from "components/Typography";
 import Button from "components/Button";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAddEmployee, fetchUpdateEmployee} from "app/reducers/emloyee";
+import {clearLastCreated, fetchAddEmployee, fetchUpdateEmployee} from "app/reducers/emloyee";
 import {useNavigate, useParams} from "react-router-dom";
 import {useIntl} from "react-intl";
-import {Pencil1Icon} from "@radix-ui/react-icons";
+import {ArrowLeftIcon, Pencil1Icon} from "@radix-ui/react-icons";
 import IconButton from "../../../components/IconButton";
 
 const employee = {
@@ -36,11 +37,9 @@ const employee = {
 }
 
 function EmployeeDetails() {
-  const {employees, loading, error} = useSelector(state => state.employee)
+  const {employees, loading, error, lastCreated} = useSelector(state => state.employee);
   const {id} = useParams();
-
   const navigate = useNavigate()
-
   const dispatch = useDispatch();
   const {formatMessage} = useIntl();
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
@@ -53,15 +52,32 @@ function EmployeeDetails() {
     useEffect(() => {
         if(id && !loading && !error) {
             const currentEmployee = employees.find(item => item.id == id);
-            const {name, age, position, experienceYears} = currentEmployee;
-            setFormData({name, age, position, experienceYears})
-            setInterests(currentEmployee.interests)
-            setCompany(currentEmployee.company)
+            if(currentEmployee) {
+                const {name, age, position, experienceYears} = currentEmployee;
+                setFormData({name, age, position, experienceYears})
+                setInterests(currentEmployee.interests)
+                setCompany(currentEmployee.company)
+            }
         }
-    }, [loading]);
+    }, [loading, edit]);
+
+  useEffect(() => {
+      if(lastCreated && lastCreated.id && !loading && !error) {
+          console.log("lastCreated", lastCreated);
+          navigate("/employeeDetails/" + lastCreated.id)
+          dispatch(clearLastCreated());
+      }
+  }, [lastCreated])
+
+
 
 
   const handleChange = (name, value) => {
+      if(name === "age" || name === "experienceYears"){
+          if(parseInt(value) < 0) {
+              return
+          }
+      }
     setFormData({...formData, [name]: value});
   }
 
@@ -71,33 +87,37 @@ function EmployeeDetails() {
 
   const handleSaveConfirm = () => {
     if(id) {
-        handleUpdate().then(() => {
-            if(!error) {
-                setSaveDialogOpen(false);
-            }
-        })
+        handleUpdate()
     } else {
         handleAdd()
-        setSaveDialogOpen(false);
     }
-    navigate("/default")
+      setSaveDialogOpen(false);
   };
 
-    const handleSave = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         setSaveDialogOpen(true);
     }
 
-  const handleCancel = () => {
+  const handleBack = () => {
       navigate("/default")
     }
 
-  const handleUpdate = async() => {
+    const handleCancel = () => {
+        if(id) {
+            setEdit(false);
+        }else{
+            handleBack();
+        }
+    }
+
+  const handleUpdate = () => {
     const updatedEmployee = {
         ...formData,
         interests,
         company
     };
-      await dispatch(fetchUpdateEmployee(id, updatedEmployee))
+      dispatch(fetchUpdateEmployee(id, updatedEmployee))
   };
 
 
@@ -107,7 +127,7 @@ function EmployeeDetails() {
         interests,
         company
     };
-      dispatch(fetchAddEmployee(newEmployee))
+    dispatch(fetchAddEmployee(newEmployee))
   };
 
 
@@ -115,32 +135,49 @@ function EmployeeDetails() {
       return <div>Loading</div>
   }
 
-    if(error) {
-        return <div>{error}</div>
-    }
-
 
   return (
     <>
-        <form>
-            <Grid container spacing={0} justifyContent="center" alignItems="center">
+        <form onSubmit={handleSubmit}>
+            <Grid container spacing={8} justifyContent="center" alignItems="center">
                 <Grid item sm={4}>
-                    <Typography variant="h5" gutterBottom align="center">
-                        <h2>{formatMessage({ id: 'employees.pageTitle' })}</h2>
-                    </Typography>
+                    <IconButton onClick={handleBack}>
+                        <ArrowLeftIcon width={25} height={25}/>
+                    </IconButton>
                 </Grid>
-                {
-                    id && (
-                        <Grid item sm={1}>
-                            <IconButton onClick={() => setEdit(!edit)}>
-                                <Pencil1Icon width={25} height={25}/>
-                            </IconButton>
+                <Grid item sm={8}>
+                    <Grid container spacing={1} alignItems="center">
+                        <Grid item>
+                            <Typography variant="h5" gutterBottom align="center">
+                                <h2>{formatMessage({ id: 'employees.pageTitle' })}</h2>
+                            </Typography>
                         </Grid>
-                    )
-                }
+                        <Grid item>
+                            {
+                                id && (
+                                    <Grid item sm={1}>
+                                        <IconButton onClick={() => setEdit(!edit)}>
+                                            <Pencil1Icon width={25} height={25}/>
+                                        </IconButton>
+                                    </Grid>
+                                )
+                            }
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Grid>
 
             <Grid container spacing={2}>
+                {
+                    error && (
+                        <Grid item sm={12}>
+                            <Alert severity="error">
+                                <AlertTitle>Error</AlertTitle>
+                                {error}
+                            </Alert>
+                        </Grid>
+                    )
+                }
                 <Grid item xs={6} sm={6}>
                     <Stack spacing={2}>
                         <Typography variant="h3">
@@ -160,26 +197,32 @@ function EmployeeDetails() {
                             label="Age"
                             variant="outlined"
                             type="number"
+                            min={0}
                             value={formData.age}
-                            onChange={(e) => handleChange("age", e.target.value)}
+                            onInput={(e) => handleChange("age", e.target.value)}
                             disabled={!edit}
+                            required
                             fullWidth
                         />
                         <TextField
                             label="Position"
                             variant="outlined"
                             value={formData.position}
-                            onChange={(e) => handleChange("position", e.target.value)}
+                            inputProps={{min: 0}}
+                            onInput={(e) => handleChange("position", e.target.value)}
                             disabled={!edit}
+                            required
                             fullWidth
                         />
                         <TextField
                             label="Experience Years"
                             variant="outlined"
                             type="number"
+                            inputProps={{min: 0}}
                             value={formData.experienceYears}
                             onChange={(e) => handleChange("experienceYears", e.target.value)}
                             disabled={!edit}
+                            required
                             fullWidth
                         />
                         {
@@ -187,7 +230,7 @@ function EmployeeDetails() {
                                 <Grid container spacing={1} columnSpacing={2}>
                                     <Grid item sm={7}></Grid>
                                     <Grid item sm={2}>
-                                        <Button variant="outline" onClick={handleSave}>{!id ? "Створити" : "Зберегти"}</Button>
+                                        <Button variant="outline" type="submit">{!id ? "Створити" : "Зберегти"}</Button>
                                     </Grid>
                                     <Grid item sm={2}>
                                         <Button variant="outline" onClick={handleCancel}>Скасувати</Button>
@@ -208,6 +251,7 @@ function EmployeeDetails() {
                             value={company.name}
                             onChange={(e) => handleChangeCompany("name", e.target.value)}
                             disabled={!edit}
+                            required
                             fullWidth
                         />
                         <TextField
@@ -216,6 +260,7 @@ function EmployeeDetails() {
                             value={company.industry}
                             onChange={(e) => handleChangeCompany("industry", e.target.value)}
                             disabled={!edit}
+                            required
                             fullWidth
                         />
                         <Typography variant="h3">
@@ -228,6 +273,7 @@ function EmployeeDetails() {
                                 value={item}
                                 onChange={(e) => setInterests(interests.map((_, i) => i === index ? e.target.value : _ ))}
                                 disabled={!edit}
+                                required
                                 fullWidth
                             />))
                         }

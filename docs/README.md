@@ -22,9 +22,23 @@ This project is a frontend implementation for managing companies and employees, 
     - When creating a new entity, the page opens directly in "Edit" mode with "Create" and "Cancel" buttons. Clicking "Create" initiates the same process as editing an existing entity.
     - Includes a "Back" button for returning to the entity list page. Filter and pagination settings remain intact.
 
+
+1. List of Employees:
+
+
+2. Employee Details Page:
+   - Employee Details(View Mode):
+   
+   - Employee Details(Edit Mode):
+
+
+
 **Usage:**
 1. Clone this repository to your local machine.
 2. Build and Run: Build and run the application using Maven or your preferred IDE.
+
+**Screenshots:**
+
 
 **License:**
 This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.

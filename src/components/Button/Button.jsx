@@ -29,6 +29,7 @@ function Button({
   isLoading = false,
   onClick,
   startIcon,
+    type,
   variant = variants.secondary,
 }) {
   const { theme } = useTheme();
@@ -64,6 +65,7 @@ function Button({
             },
           }}
           variant={MUIVariantsToVariants[variant]}
+          type={type}
         >
           {children}
         </ButtonMUI>

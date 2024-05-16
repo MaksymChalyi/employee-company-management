@@ -6,7 +6,11 @@ import {
   FETCH_ADD_EMPLOYEE_REQUESTED,
   FETCH_ADD_EMPLOYEE_SUCCEEDED,
   FETCH_ADD_EMPLOYEE_FAILED,
-  FETCH_UPDATE_EMPLOYEE_FAILED, FETCH_UPDATE_EMPLOYEE_SUCCEEDED, FETCH_UPDATE_EMPLOYEE_REQUESTED,
+  FETCH_UPDATE_EMPLOYEE_FAILED,
+  FETCH_UPDATE_EMPLOYEE_SUCCEEDED,
+  FETCH_UPDATE_EMPLOYEE_REQUESTED,
+  CLEAR_LAST_CREATED,
+  DELETE_EMPLOYEE_REQUESTED, DELETE_EMPLOYEE_FAILED,
 } from "../constants/actionTypes";
 
 import axios from "axios";
@@ -14,6 +18,7 @@ import axios from "axios";
 const initialState = {
   loading: false,
   employees: [],
+  lastCreated: {},
   totalCount: 0,
   error: "",
 };
@@ -57,6 +62,11 @@ const fetchAddEmployeeFailure = (error) => {
     payload: error,
   };
 };
+export const clearLastCreated = () => {
+  return {
+    type: CLEAR_LAST_CREATED
+  }
+}
 const fetchUpdateEmployeeRequest = () => {
   return {
     type: FETCH_UPDATE_EMPLOYEE_REQUESTED,
@@ -76,6 +86,25 @@ const fetchUpdateEmployeeFailure = (error) => {
     payload: error,
   };
 };
+
+const deleteEmployeeRequest = () => {
+  return {
+    type: DELETE_EMPLOYEE_REQUESTED
+  }
+}
+
+const deleteEmployeeSuccess = (id) => {
+  return {
+    type: DELETE_EMPLOYEE_SUCCEEDED,
+    payload: id
+  }
+}
+const deleteEmployeeFailure = (error) => {
+  return {
+    type: DELETE_EMPLOYEE_FAILED,
+    payload: error
+  }
+}
 
 
 export default function reducer(state = initialState, action) {
@@ -111,13 +140,20 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: false,
         employees: [...state.employees, action.payload],
+        lastCreated: action.payload,
         error: "",
       };
     case FETCH_ADD_EMPLOYEE_FAILED:
       return {
+        ...state,
         loading: false,
         error: action.payload,
       };
+    case CLEAR_LAST_CREATED:
+      return {
+        ...state,
+        lastCreated: {}
+      }
     case FETCH_UPDATE_EMPLOYEE_REQUESTED:
       return {
         ...state,
@@ -133,13 +169,25 @@ export default function reducer(state = initialState, action) {
       };
     case FETCH_UPDATE_EMPLOYEE_FAILED:
       return {
+        ...state,
         loading: false,
         error: action.payload,
+      };
+    case DELETE_EMPLOYEE_REQUESTED:
+      return {
+        ...state,
+        loading: true
       };
     case DELETE_EMPLOYEE_SUCCEEDED:
       return {
         ...state,
         employees: state.employees.filter(emp => emp.id !== action.payload),
+      };
+    case DELETE_EMPLOYEE_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     default:
       return state; // Ensure to return the state for any other action type
@@ -147,7 +195,7 @@ export default function reducer(state = initialState, action) {
 }
 
 export const fetchEmployees = (page = 0) => {
-  return function (dispatch) {
+  return async function  (dispatch) {
     dispatch(fetchUserRequest());
     axios
       .get("http://localhost:8080/api/employee/all", {
@@ -155,12 +203,14 @@ export const fetchEmployees = (page = 0) => {
           page
         }
       })
-      .then((response) => {
+      .then(async (response) => {
         //response.data is the users
         // const users = response.data.map((user) => user.id);
         console.log("response", response);
-
-        dispatch(fetchUserSuccess(response));
+        if(response.message) {
+          dispatch(fetchUsersFailure(response.message));
+        }
+        await dispatch(fetchUserSuccess(response));
       })
       .catch((error) => {
         //error.message is the error message
@@ -192,11 +242,27 @@ export const fetchUpdateEmployee = (id, employee) => {
         .put("http://localhost:8080/api/employee/" + id, employee)
         .then((response) => {
           console.log("response", response);
-          dispatch(fetchUpdateEmployeeSuccess(response));
+          dispatch(fetchUpdateEmployeeSuccess(id));
         })
         .catch((error) => {
           //error.message is the error message
           dispatch(fetchUpdateEmployeeFailure(error.message));
+        });
+  };
+};
+
+export const deleteEmployee = (id) => {
+  return function (dispatch) {
+    dispatch(deleteEmployeeRequest());
+    axios
+        .delete("http://localhost:8080/api/employee/" + id)
+        .then((response) => {
+          console.log("response", response);
+          dispatch(deleteEmployeeSuccess(id));
+        })
+        .catch((error) => {
+          //error.message is the error message
+          dispatch(deleteEmployeeFailure(error.message));
         });
   };
 };
