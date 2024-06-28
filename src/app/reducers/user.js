@@ -12,19 +12,17 @@ import {
 } from '../constants/actionTypes';
 
 const initialState = {
+  email: "",
+  name: "",
+  isAuth: false,
   authorities: [],
-  firstName: '',
-  email: '',
   errors: [],
-  id: '',
   isAuthorized: false,
   isFailedSignIn: false,
   isFailedSignUp: false,
   isFetchingSignIn: false,
   isFetchingSignUp: false,
   isFetchingUser: false,
-  lastName: '',
-  login: '',
 };
 
 const convertErrors = errors => errors.map(error => ({
@@ -51,22 +49,13 @@ export default function Reducer(state = initialState, action) {
         isFetchingSignUp: false,
       };
     }
-
-    case RECEIVE_USER:
     case SUCCESS_SIGN_IN: {
-      const user = action.payload;
-
       return {
         ...state,
-        authorities: user.authorities || initialState.authorities,
-        email: user.email || initialState.email,
-        firstName: user.firstName || initialState.firstName,
-        id: user.id || initialState.id,
-        isAuthorized: true,
+        ...action.payload,
+        isAuth: true,
         isFetchingSignIn: false,
-        isFetchingUser: false,
-        lastName: user.lastName || initialState.lastName,
-        login: user.login || initialState.login,
+        isFetchingUser: false
       };
     }
 

@@ -13,13 +13,28 @@ import pageURLs from "constants/pagesURLs";
 import SecretPage from "pageProviders/Secret";
 import ThemeProvider from "misc/providers/ThemeProvider";
 import UserProvider from "misc/providers/UserProvider";
-
 import actionsUser from "../actions/user";
 import Header from "../components/Header";
 import IntlProvider from "../components/IntlProvider";
 import MissedPage from "../components/MissedPage";
 import SearchParamsConfigurator from "../components/SearchParamsConfigurator";
 import {fetchEmployees} from "../reducers/emloyee";
+import {Box, Button, Modal, Typography} from "@mui/material";
+import axios from "axios";
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +43,7 @@ function App() {
   });
 
   const {
+    isAuth,
     errors,
     isFailedSignIn,
     isFailedSignUp,
@@ -35,7 +51,13 @@ function App() {
     isFetchingSignUp,
     isFetchingUser,
   } = useSelector(({ user }) => user);
+  console.log("isFetchingSignIn " + isFetchingSignIn)
+  console.log("isFetchingSignUp " + isFetchingSignUp)
+  console.log("isFetchingUser " + isFetchingUser)
+  console.log("isAuth: " + isAuth);
   const [fetchedPages, setFetchedPages] = useState([0]);
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleFetchedPage = (page) => {
     setFetchedPages([...fetchedPages, page]);
@@ -54,13 +76,35 @@ function App() {
 
   useEffect(() => {
     // Your logic for fetching initial data
-    dispatch(fetchEmployees());
+    dispatch(actionsUser.fetchUser())
   }, []);
+
+  useEffect(() => {
+    if(!isAuth) {
+      setModalOpen(true);
+      return;
+    }
+    setModalOpen(false)
+    dispatch(fetchEmployees());
+  }, [isAuth]);
 
   return (
     <UserProvider>
       <AuthoritiesProvider>
         <ThemeProvider>
+          <Modal
+              open={modalOpen}
+              onClose={() => setModalOpen(false)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Login
+              </Typography>
+              <Button onClick={() => actionsUser.signIn()}>Login</Button>
+            </Box>
+          </Modal>
           <BrowserRouter>
             <SearchParamsConfigurator />
             {/* This is needed to let first render passed for App's

@@ -14,6 +14,9 @@ import {
 } from "../constants/actionTypes";
 
 import axios from "axios";
+import config from "../../config";
+
+const {BACKEND_SERVICE} = config;
 
 const initialState = {
   loading: false,
@@ -201,7 +204,7 @@ export const fetchEmployees = (page = 0) => {
   return async function  (dispatch) {
     dispatch(fetchUserRequest());
     axios
-      .get("http://localhost:8080/api/employee/all", {
+      .get(`${BACKEND_SERVICE}/api/employee/all`, {
         params: {
           page
         }
@@ -229,7 +232,7 @@ export const fetchAddEmployee = (employee) => {
   return function (dispatch) {
     dispatch(fetchAddEmployeeRequest());
     axios
-        .post("http://localhost:8080/api/employee", employee)
+        .post(`${BACKEND_SERVICE}/api/employee`, employee)
         .then((response) => {
           console.log("response", response);
           dispatch(fetchAddEmployeeSuccess(response));
@@ -250,7 +253,7 @@ export const fetchUpdateEmployee = (id, employee) => {
   return function (dispatch) {
     dispatch(fetchUpdateEmployeeRequest());
     axios
-        .put("http://localhost:8080/api/employee/" + id, employee)
+        .put(`${BACKEND_SERVICE}/api/employee/` + id, employee)
         .then((response) => {
           console.log("response", response);
           dispatch(fetchUpdateEmployeeSuccess(response));
@@ -271,7 +274,7 @@ export const deleteEmployee = (id) => {
   return function (dispatch) {
     dispatch(deleteEmployeeRequest());
     axios
-        .delete("http://localhost:8080/api/employee/" + id)
+        .delete(`${BACKEND_SERVICE}/api/employee/` + id)
         .then((response) => {
           console.log("response", response);
           if(response.message) {

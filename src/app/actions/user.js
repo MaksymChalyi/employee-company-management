@@ -75,27 +75,18 @@ const requestSignOut = () => ({
 
 const getUser = () => {
   const {
-    USERS_SERVICE,
+    BACKEND_SERVICE_AUTH
   } = config;
-  return axios.get(`${USERS_SERVICE}/user/get`);
+  return axios.get(`${BACKEND_SERVICE_AUTH}/api/profile`, {
+    withCredentials: true
+  });
 };
 
-const signIn = ({
-  email,
-  login,
-  password,
-}) => {
+const signIn = () => {
   const {
-    USERS_SERVICE,
+    BACKEND_SERVICE_AUTH
   } = config;
-  return axios.post(
-    `${USERS_SERVICE}/user/signIn`,
-    {
-      email,
-      login,
-      password,
-    },
-  );
+  window.location.href = `${BACKEND_SERVICE_AUTH}/oauth/authenticate`;
 };
 
 const signUp = ({
@@ -177,23 +168,12 @@ const fetchSignUp = ({
     .catch((errors) => dispatch(errorSignUp(errors)))
 };
 
+
 const fetchUser = () => (dispatch) => {
-  if (!storage.getItem(keys.TOKEN)) {
-    return null;
-  }
   dispatch(requestUser());
   return getUser()
-    // TODO Mocked '.catch()' section
-    .catch((err) => {
-      const user = storage.getItem('USER');
-      if (user) {
-        const parsedUser = JSON.parse(user);
-        return parsedUser;
-      }
-      return Promise.reject(err);
-    })
-    .then(user => dispatch(receiveUser(user)))
-    .catch(() => dispatch(fetchSignOut()));
+      .then(user => dispatch(successSignIn(user)))
+      .catch(() => dispatch(fetchSignOut()));
 };
 
 const exportFunctions = {
@@ -202,6 +182,7 @@ const exportFunctions = {
   fetchSignOut,
   fetchSignUp,
   fetchUser,
+  signIn
 };
 
 export default exportFunctions;
