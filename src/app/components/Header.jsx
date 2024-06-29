@@ -181,27 +181,27 @@ function Header({
                   </Hover>
                 </div>
               )}
-              {itemType === rightPanelItemTypes.LOGIN && (
-                <Link
-                  to={{
-                    pathname: `${pagesURLs[pages.login]}`,
-                  }}
-                >
-                  <Button
-                    colorVariant="header"
-                    variant="text"
-                  >
-                    <Typography
-                      color="inherit"
-                      variant="subtitle"
-                    >
-                      <strong>
-                        {formatMessage({ id: 'signIn' })}
-                      </strong>
-                    </Typography>
-                  </Button>
-                </Link>
-              )}
+              {/*{itemType === rightPanelItemTypes.LOGIN && (*/}
+              {/*  <Link*/}
+              {/*    to={{*/}
+              {/*      pathname: `${pagesURLs[pages.login]}`,*/}
+              {/*    }}*/}
+              {/*  >*/}
+              {/*    <Button*/}
+              {/*      colorVariant="header"*/}
+              {/*      variant="text"*/}
+              {/*    >*/}
+              {/*      <Typography*/}
+              {/*        color="inherit"*/}
+              {/*        variant="subtitle"*/}
+              {/*      >*/}
+              {/*        <strong>*/}
+              {/*          {formatMessage({ id: 'signIn' })}*/}
+              {/*        </strong>*/}
+              {/*      </Typography>*/}
+              {/*    </Button>*/}
+              {/*  </Link>*/}
+              {/*)}*/}
               {itemType === rightPanelItemTypes.LANGUAGE && (
                 <>
                   <div className={classes.selectedLang}>
@@ -231,16 +231,16 @@ function Header({
                   </div>
                 </>
               )}
-              {itemType === rightPanelItemTypes.SEPARATOR && (
-                <Typography
-                  color="paper"
-                  variant="subtitle"
-                >
-                  <strong>
-                    |
-                  </strong>
-                </Typography>
-              )}
+              {/*{itemType === rightPanelItemTypes.SEPARATOR && (*/}
+              {/*  <Typography*/}
+              {/*    color="paper"*/}
+              {/*    variant="subtitle"*/}
+              {/*  >*/}
+              {/*    <strong>*/}
+              {/*      |*/}
+              {/*    </strong>*/}
+              {/*  </Typography>*/}
+              {/*)}*/}
             </>
           ))}
         </div>

@@ -77,9 +77,8 @@ const getUser = () => {
   const {
     BACKEND_SERVICE_AUTH
   } = config;
-  return axios.get(`${BACKEND_SERVICE_AUTH}/api/profile`, {
-    withCredentials: true
-  });
+  axios.defaults.withCredentials = true;
+  return axios.get(`${BACKEND_SERVICE_AUTH}/api/profile`);
 };
 
 const signIn = () => {
